@@ -1,0 +1,88 @@
+{
+  "version": "1.1.1",
+  "windows": {
+    "main": {
+      "main": true,
+      "url": "app://editor/index.html",
+      "windowType": "dockable",
+      "x": -8,
+      "y": -8,
+      "width": 1552,
+      "height": 840,
+      "layout": {
+        "children": [
+          {
+            "children": [
+              {
+                "active": 0,
+                "children": [
+                  "hierarchy"
+                ],
+                "height": 360.6000061035156,
+                "type": "panel",
+                "width": 248.3874969482422
+              },
+              {
+                "active": 0,
+                "children": [
+                  "assets"
+                ],
+                "height": 350.5874938964844,
+                "type": "panel",
+                "width": 248.3874969482422
+              }
+            ],
+            "height": 714.2000122070312,
+            "type": "dock-v",
+            "width": 248.3874969482422
+          },
+          {
+            "children": [
+              {
+                "active": 0,
+                "children": [
+                  "scene"
+                ],
+                "height": 444.375,
+                "type": "panel",
+                "width": 907.4249877929688
+              },
+              {
+                "active": 0,
+                "children": [
+                  "console",
+                  "timeline"
+                ],
+                "height": 266.82501220703125,
+                "type": "panel",
+                "width": 907.4249877929688
+              }
+            ],
+            "height": 714.2000122070312,
+            "type": "dock-v",
+            "width": 907.4249877929688
+          },
+          {
+            "active": 0,
+            "children": [
+              "inspector"
+            ],
+            "height": 714.2000122070312,
+            "type": "panel",
+            "width": 370.5874938964844
+          }
+        ],
+        "type": "dock-h"
+      },
+      "panels": [
+        "hierarchy",
+        "console",
+        "timeline",
+        "inspector",
+        "assets",
+        "scene"
+      ]
+    }
+  },
+  "panels": {}
+}

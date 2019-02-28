@@ -1,0 +1,58 @@
+2019-02-28T02:59:43.839Z - normal: Load ~/.CocosCreator/settings.json
+2019-02-28T02:59:43.839Z - normal: checking language setting...
+2019-02-28T02:59:43.839Z - normal: Language: zh
+2019-02-28T02:59:45.466Z - success: protocol editor-framework registered
+2019-02-28T02:59:45.466Z - success: protocol app registered
+2019-02-28T02:59:45.466Z - success: protocol theme registered
+2019-02-28T02:59:45.466Z - success: protocol packages registered
+2019-02-28T02:59:45.466Z - success: protocol unpack registerred
+2019-02-28T02:59:45.466Z - success: protocol disable-commonjs registerred
+2019-02-28T02:59:45.591Z - normal: connected!
+2019-02-28T02:59:45.591Z - normal: Check project D:\CocosProject\Minesweeper
+2019-02-28T02:59:45.591Z - normal: Initializing project D:\CocosProject\Minesweeper
+2019-02-28T02:59:45.607Z - normal: Initializing Cocos2d
+2019-02-28T02:59:46.232Z - normal: Initializing Asset Database
+2019-02-28T02:59:46.278Z - success: protocol uuid registerred
+2019-02-28T02:59:46.278Z - success: protocol db registerred
+2019-02-28T02:59:46.278Z - success: protocol thumbnail registerred
+2019-02-28T02:59:46.278Z - normal: Loading editor/builtin packages
+2019-02-28T02:59:46.420Z - success: assets loaded
+2019-02-28T02:59:46.435Z - success: builder loaded
+2019-02-28T02:59:46.435Z - success: cocos-analytics loaded
+2019-02-28T02:59:46.435Z - success: console loaded
+2019-02-28T02:59:46.466Z - success: fb-instant-games loaded
+2019-02-28T02:59:46.466Z - success: google-instant-games loaded
+2019-02-28T02:59:46.466Z - success: hierarchy loaded
+2019-02-28T02:59:46.482Z - success: inspector loaded
+2019-02-28T02:59:46.482Z - success: keystore loaded
+2019-02-28T02:59:46.482Z - success: node-library loaded
+2019-02-28T02:59:46.482Z - success: package-asset loaded
+2019-02-28T02:59:46.482Z - success: preferences loaded
+2019-02-28T02:59:46.482Z - success: project-exporter loaded
+2019-02-28T02:59:46.498Z - success: project-importer loaded
+2019-02-28T02:59:46.498Z - success: project-settings loaded
+2019-02-28T02:59:46.513Z - success: ui-kit loaded
+2019-02-28T02:59:46.513Z - success: scene loaded
+2019-02-28T02:59:46.513Z - success: sprite-editor loaded
+2019-02-28T02:59:46.513Z - success: store loaded
+2019-02-28T02:59:46.513Z - success: timeline loaded
+2019-02-28T02:59:46.513Z - normal: Loading builtin packages
+2019-02-28T02:59:46.529Z - success: asset-db-debugger loaded
+2019-02-28T02:59:46.545Z - success: code-editor loaded
+2019-02-28T02:59:46.545Z - success: color-picker loaded
+2019-02-28T02:59:46.638Z - success: google-play-instant loaded
+2019-02-28T02:59:46.638Z - success: jsb-adapter loaded
+2019-02-28T02:59:46.638Z - success: package-manager loaded
+2019-02-28T02:59:46.732Z - success: qqplay-adapter loaded
+2019-02-28T02:59:46.732Z - success: sdkbox loaded
+2019-02-28T02:59:46.732Z - success: tester loaded
+2019-02-28T02:59:46.732Z - success: ui-grid loaded
+2019-02-28T02:59:46.732Z - success: ui-kit-preview-extra loaded
+2019-02-28T02:59:46.748Z - success: ui-kit-preview loaded
+2019-02-28T02:59:46.763Z - success: ui-tree loaded
+2019-02-28T02:59:46.763Z - success: weapp-adapter loaded
+2019-02-28T02:59:47.778Z - normal: Loading packages
+2019-02-28T02:59:47.778Z - normal: Watching packages
+2019-02-28T02:59:48.265Z - normal: Run Application
+2019-02-28T02:59:49.952Z - success: preview server running at http://localhost:7456
+2019-02-28T03:00:03.335Z - info: shutdown preview server

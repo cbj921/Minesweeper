@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "btn_common_sousuo_normal",
+    "texture": "a803bc0b-ceb5-47fc-8375-19c36dc80671",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      69,
+      65
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      69,
+      65
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

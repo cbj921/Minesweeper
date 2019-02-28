@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "hscroll",
+    "texture": "45de245e-31f4-4d58-8664-a5a15d08241f",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      68,
+      8
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      68,
+      8
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

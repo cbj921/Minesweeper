@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "newqqface0123_1",
+    "texture": "75b58456-e412-4213-801a-ce6e5718bcb3",
+    "atlas": "",
+    "rect": [
+      9,
+      4,
+      38,
+      47
+    ],
+    "offset": [
+      0,
+      0.5
+    ],
+    "originalSize": [
+      56,
+      56
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
