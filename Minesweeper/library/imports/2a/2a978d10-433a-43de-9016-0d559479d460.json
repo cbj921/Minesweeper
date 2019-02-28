@@ -17,14 +17,17 @@
     "_parent": null,
     "_children": [],
     "_active": true,
-    "_level": 3,
+    "_level": 1,
     "_components": [
       {
         "__id__": 2
+      },
+      {
+        "__id__": 3
       }
     ],
     "_prefab": {
-      "__id__": 3
+      "__id__": 4
     },
     "_opacity": 255,
     "_color": {
@@ -100,12 +103,63 @@
     "_id": ""
   },
   {
+    "__type__": "f6da1522BNKVLT6b/I295sG",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "picNone": {
+      "__uuid__": "794fa2da-af97-4b2a-ba89-756ea38dafc1"
+    },
+    "picFlag": {
+      "__uuid__": "ead79c0f-c862-41fe-8df7-0febfe6d974e"
+    },
+    "picDoubt": {
+      "__uuid__": "62bdc144-775f-4676-93eb-2f354ac363ab"
+    },
+    "picZero": {
+      "__uuid__": "b1511d09-279d-44e8-a4da-b08c6122265d"
+    },
+    "picOne": {
+      "__uuid__": "9cafea84-73d1-412c-b16e-abf36a1c75dd"
+    },
+    "picTwo": {
+      "__uuid__": "31cb0133-6e55-4f6c-99d3-0d856bcff317"
+    },
+    "picThree": {
+      "__uuid__": "54880c29-c2a0-4fd7-aff8-137568c0d301"
+    },
+    "picFour": {
+      "__uuid__": "39070a8b-9768-458d-943d-4a848f6ce78a"
+    },
+    "picFive": {
+      "__uuid__": "4b420d32-4b89-42bd-9045-995b1fd2b867"
+    },
+    "picSix": {
+      "__uuid__": "8053162a-550d-49de-b99b-d236cecad507"
+    },
+    "picSeven": {
+      "__uuid__": "239a0d8f-0eb1-48eb-a3cf-3664bb15b78c"
+    },
+    "picEight": {
+      "__uuid__": "c323091b-c4f2-4894-9c9f-74aa231226a1"
+    },
+    "picBomb": {
+      "__uuid__": "2eabc2d2-2fa3-4f14-8533-48e91cc0dc89"
+    },
+    "_state": 0,
+    "ClickType": 0,
+    "_id": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "2a978d10-433a-43de-9016-0d559479d460"
     },
     "fileId": "3cEZJQrixJ9YOH0JGvVzI1",
     "sync": false

@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.635687907678705,
-      "y": 0.635687907678705,
+      "x": 0.5158008098602295,
+      "y": 0.5158008098602295,
       "z": 1
     },
     "_quat": {
@@ -54,7 +54,8 @@
     },
     "_zIndex": 0,
     "groupIndex": 0,
-    "_id": "4f4QGYrgNDYpmG3DSfIFGM"
+    "autoReleaseAssets": false,
+    "_id": "984c03f8-e2bd-4f03-b382-9d16dc1a22f8"
   },
   {
     "__type__": "cc.Node",
