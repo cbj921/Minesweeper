@@ -41,20 +41,20 @@ cc.Class({
         this.Tile = require("Blank"); // 获得Blank脚本中的状态量：STATE,TYPE
         let self = this; // 将this赋值给self，好处就是在回调函数中self依旧对应的是this
         for (let r = 0; r < this.row; r++) {
-            for (let c = 0; c < this.col; c++){
+            for (let c = 0; c < this.col; c++) {
                 let genTile = cc.instantiate(this.tile);
-                genTile.name = String(r*this.col + c) ; // 必须为 字符串 类型，否则会出错，将生成的方块名字命名为在 tiles数组 中的下标
-                genTile.on(cc.Node.EventType.MOUSE_UP,function(event){
+                genTile.name = String(r * this.col + c); // 必须为 字符串 类型，否则会出错，将生成的方块名字命名为在 tiles数组 中的下标
+                genTile.on(cc.Node.EventType.MOUSE_UP, function (event) {
                     // 对每一个生成的方块都开启 鼠标事件监听
-                    if( event.getButton() === cc.Event.EventMouse.BUTTON_LEFT ){
+                    if (event.getButton() === cc.Event.EventMouse.BUTTON_LEFT) {
                         self.touchState = TOUCH_STATE.BLANK;
-                    }else if(event.getButton() === cc.Event.EventMouse.BUTTON_RIGHT){
-                        if(self.touchState === TOUCH_STATE.BLANK){
+                    } else if (event.getButton() === cc.Event.EventMouse.BUTTON_RIGHT) {
+                        if (self.touchState === TOUCH_STATE.BLANK) {
                             self.touchState = TOUCH_STATE.FLAG;
                         }
-                        if(self.touchState === TOUCH_STATE.FLAG){
+                        if (self.touchState === TOUCH_STATE.FLAG) {
                             self.touchState = TOUCH_STATE.DOUBT;
-                        }else self.touchState = TOUCH_STATE.BLANK;
+                        } else self.touchState = TOUCH_STATE.BLANK;
                     }
                     //self.onTouchTile(this); // 该函数还没写先注释，这时候这里的this又是啥？？？
                 });
@@ -65,8 +65,42 @@ cc.Class({
         this.newGame();
     },
 
-    newGame: function(){
+    newGame: function () {
+        let thilesLength = this.tiles.length;
         // 初始化场景
+        for (let n = 0; n < thilesLength; n++) {
+            this.tiles[n].getComponent("Blank").ClickType = this.Tile.TYPE.ZERO;
+            this.tiles[n].getComponent("Blank").state = this.Tile.STATE.NONE;
+        }
+        // 添加雷
+        let tilesIndex = [];
+        for (let i = 0; i < thilesLength; i++) {
+            tilesIndex[i] = i; // 初始化方块数组，然后雷将随机填入其中，一维数组表示二维地图
+        }
+        for (let b = 0; b < this.bombNum; b++) {
+            let n = Math.floor(Math.random() * tilesIndex.length); // 随机炸弹位置
+            this.tiles[tilesIndex[n]].getComponent("Blank").ClickType = this.Tile.TYPE.BOMB;
+            tilesIndex.splice(n, 1); // 删除第 n 个位置一个元素，避免重复放雷
+        }
+        // 标记雷周围的方块
+        for (let n = 0; n < thilesLength; n++) {
+            let tempBomb = 0;
+            if (this.tiles[n].getComponent("Blank").ClickType == this.Tile.TYPE.ZERO) {
+                let roundTiles = this.tileRound(n);
+                for (let m = 0; m < roundTiles.length; m++) {
+                    if (roundTiles[m].getComponent("Blank").ClickType == this.Tile.TYPE.BOMB) {
+                        tempBomb++;
+                    }
+                }
+                this.tiles[k].getComponent("Blank").ClickType = tempBomb; // 周围有多少雷就标记几
+            }
+        }
+        this.gameState = GAME_STATE.PLAY;
+        this.btnStart.getComponent(cc.Sprite).SpriteFrame = this.picPlay;
+    },
+
+    // 返回 name 为 n 的 tile 的周围 tile 数组
+    tileRound: function(){
         
     },
 

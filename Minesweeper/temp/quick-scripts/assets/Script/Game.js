@@ -72,9 +72,41 @@ cc.Class({
     },
 
     newGame: function newGame() {
+        var thilesLength = this.tiles.length;
         // 初始化场景
-
+        for (var n = 0; n < thilesLength; n++) {
+            this.tiles[n].getComponent("Blank").ClickType = this.Tile.TYPE.ZERO;
+            this.tiles[n].getComponent("Blank").state = this.Tile.STATE.NONE;
+        }
+        // 添加雷
+        var tilesIndex = [];
+        for (var i = 0; i < thilesLength; i++) {
+            tilesIndex[i] = i; // 初始化方块数组，然后雷将随机填入其中，一维数组表示二维地图
+        }
+        for (var b = 0; b < this.bombNum; b++) {
+            var _n = Math.floor(Math.random() * tilesIndex.length); // 随机炸弹位置
+            this.tiles[tilesIndex[_n]].getComponent("Blank").ClickType = this.Tile.TYPE.BOMB;
+            tilesIndex.splice(_n, 1); // 删除第 n 个位置一个元素，避免重复放雷
+        }
+        // 标记雷周围的方块
+        for (var _n2 = 0; _n2 < thilesLength; _n2++) {
+            var tempBomb = 0;
+            if (this.tiles[_n2].getComponent("Blank").ClickType == this.Tile.TYPE.ZERO) {
+                var roundTiles = this.tileRound(_n2);
+                for (var m = 0; m < roundTiles.length; m++) {
+                    if (roundTiles[m].getComponent("Blank").ClickType == this.Tile.TYPE.BOMB) {
+                        tempBomb++;
+                    }
+                }
+                this.tiles[k].getComponent("Blank").ClickType = tempBomb; // 周围有多少雷就标记几
+            }
+        }
+        this.gameState = GAME_STATE.PLAY;
+        this.btnStart.getComponent(cc.Sprite).SpriteFrame = this.picPlay;
     },
+
+    // 返回 name 为 n 的 tile 的周围 tile 数组
+    tileRound: function tileRound() {},
 
     start: function start() {}
 }
