@@ -45,8 +45,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4287093850145177,
-      "y": 0.4287093850145177,
+      "x": 0.5158008098602295,
+      "y": 0.5158008098602295,
       "z": 1
     },
     "_quat": {
@@ -352,8 +352,12 @@
     "_N$normalSprite": {
       "__uuid__": "4c3b0e06-6565-4db5-9402-d0f1e91d797f"
     },
-    "_N$pressedSprite": null,
-    "pressedSprite": null,
+    "_N$pressedSprite": {
+      "__uuid__": "a0fea357-60fa-458a-bbbf-3828d15da471"
+    },
+    "pressedSprite": {
+      "__uuid__": "a0fea357-60fa-458a-bbbf-3828d15da471"
+    },
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,

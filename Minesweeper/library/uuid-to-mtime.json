@@ -510,8 +510,8 @@
     "relativePath": "Prefab\\blank.prefab"
   },
   "984c03f8-e2bd-4f03-b382-9d16dc1a22f8": {
-    "asset": 1551506363026,
-    "meta": 1551506363039,
+    "asset": 1551508196685,
+    "meta": 1551508196709,
     "relativePath": "Scene\\Game.fire"
   },
   "f6da1e76-d813-4a54-b4fa-6ff236f79b06": {
@@ -520,8 +520,8 @@
     "relativePath": "Script\\Blank.js"
   },
   "1bacd643-2143-40d6-be8f-6fe8ed9ac597": {
-    "asset": 1551506344249,
-    "meta": 1551506350991,
+    "asset": 1551513820461,
+    "meta": 1551513820952,
     "relativePath": "Script\\Game.js"
   }
 }

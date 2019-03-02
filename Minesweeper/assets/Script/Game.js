@@ -7,7 +7,6 @@ const GAME_STATE = cc.Enum({
 const TOUCH_STATE = cc.Enum({
     BLANK: 0,
     FLAG: 1,
-    DOUBT: 2
 });
 
 cc.Class({
@@ -49,14 +48,9 @@ cc.Class({
                     if (event.getButton() === cc.Event.EventMouse.BUTTON_LEFT) {
                         self.touchState = TOUCH_STATE.BLANK;
                     } else if (event.getButton() === cc.Event.EventMouse.BUTTON_RIGHT) {
-                        if (self.touchState === TOUCH_STATE.BLANK) {
-                            self.touchState = TOUCH_STATE.FLAG;
-                        }
-                        if (self.touchState === TOUCH_STATE.FLAG) {
-                            self.touchState = TOUCH_STATE.DOUBT;
-                        } else self.touchState = TOUCH_STATE.BLANK;
+                            self.touchState = TOUCH_STATE.FLAG; 
                     }
-                    //self.onTouchTile(this); // 该函数还没写先注释，这时候这里的this又是啥？？？
+                    self.onTouchTile(genTile); // 这时候这里的是指每一个生成的方块。
                 });
                 this.tilesLayout.addChild(genTile);
                 this.tiles.push(genTile);
@@ -125,10 +119,59 @@ cc.Class({
         if (n % this.col < this.col - 1 && Math.floor(n / this.col) > 0) {// 右上
             roundTiles.push(this.tiles[n - this.col + 1]);
         }
-        if (n % this.col < this.col - 1 && Math.floor(n / this.col) < this.row-1) {// 右下
+        if (n % this.col < this.col - 1 && Math.floor(n / this.col) < this.row - 1) {// 右下
             roundTiles.push(this.tiles[n + this.col + 1]);
         }
         return roundTiles;
+    },
+
+    onTouchTile: function (touchTile) {
+        if (this.gameState != GAME_STATE.PLAY) {
+            return;
+        }
+        switch (this.touchState) {
+            case TOUCH_STATE.BLANK:
+                if (touchTile.getComponent("Blank").ClickType === this.Tile.TYPE.BOMB) {
+                    touchTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                    //this.gameOver(); // 点到炸弹游戏结束
+                    return;
+                }
+                let testTiles = []; // 定义一个栈
+                if (touchTile.getComponent("Blank").state === this.Tile.STATE.NONE) {
+                    testTiles.push(touchTile);
+                    while (testTiles.length) {
+                        // 当栈不为空的时候
+                        let testTile = testTiles.pop();
+                        if (testTile.getComponent("Blank").ClickType === this.Tile.TYPE.ZERO) {
+                            testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                            let roundTiles = this.tileRound(parseInt(testTile.name));
+                            for (let i = 0; i < roundTiles.length; i++) {
+                                if (roundTiles[i].getComponent("Blank").state == this.Tile.STATE.NONE) {
+                                    testTiles.push(roundTiles[i]);
+                                }
+                            }
+                        } else if (testTile.getComponent("Blank").ClickType >=1 
+                            && testTile.getComponent("Blank").ClickType <= 8) {
+                                testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                        }
+                    }
+                    //this.judgeWin();
+                }
+                break;
+            
+            case TOUCH_STATE.FLAG:
+                if(touchTile.getComponent("Blank").state == this.Tile.STATE.NONE){
+                    touchTile.getComponent("Blank").state = this.Tile.STATE.FLAG;
+                }else if(touchTile.getComponent("Blank").state == this.Tile.STATE.FLAG){
+                    touchTile.getComponent("Blank").state == this.Tile.STATE.DOUBT;
+                }else{
+                    touchTile.getComponent("Blank").state == this.Tile.STATE.NONE;
+                }
+                break;
+
+            default: break;   
+            
+        }
     },
 
     start() {

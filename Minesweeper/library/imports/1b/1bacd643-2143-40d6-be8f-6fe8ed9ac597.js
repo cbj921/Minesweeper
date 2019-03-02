@@ -12,8 +12,7 @@ var GAME_STATE = cc.Enum({
 });
 var TOUCH_STATE = cc.Enum({
     BLANK: 0,
-    FLAG: 1,
-    DOUBT: 2
+    FLAG: 1
 });
 
 cc.Class({
@@ -44,28 +43,29 @@ cc.Class({
     },
 
     onLoad: function onLoad() {
+        var _this = this;
+
         this.Tile = require("Blank"); // 获得Blank脚本中的状态量：STATE,TYPE
         var self = this; // 将this赋值给self，好处就是在回调函数中self依旧对应的是this
         for (var r = 0; r < this.row; r++) {
-            for (var c = 0; c < this.col; c++) {
-                var genTile = cc.instantiate(this.tile);
-                genTile.name = String(r * this.col + c); // 必须为 字符串 类型，否则会出错，将生成的方块名字命名为在 tiles数组 中的下标
+            var _loop = function _loop(c) {
+                var genTile = cc.instantiate(_this.tile);
+                genTile.name = String(r * _this.col + c); // 必须为 字符串 类型，否则会出错，将生成的方块名字命名为在 tiles数组 中的下标
                 genTile.on(cc.Node.EventType.MOUSE_UP, function (event) {
                     // 对每一个生成的方块都开启 鼠标事件监听
                     if (event.getButton() === cc.Event.EventMouse.BUTTON_LEFT) {
                         self.touchState = TOUCH_STATE.BLANK;
                     } else if (event.getButton() === cc.Event.EventMouse.BUTTON_RIGHT) {
-                        if (self.touchState === TOUCH_STATE.BLANK) {
-                            self.touchState = TOUCH_STATE.FLAG;
-                        }
-                        if (self.touchState === TOUCH_STATE.FLAG) {
-                            self.touchState = TOUCH_STATE.DOUBT;
-                        } else self.touchState = TOUCH_STATE.BLANK;
+                        self.touchState = TOUCH_STATE.FLAG;
                     }
-                    //self.onTouchTile(this); // 该函数还没写先注释，这时候这里的this又是啥？？？
+                    self.onTouchTile(genTile); // 这时候这里的是指每一个生成的方块。
                 });
-                this.tilesLayout.addChild(genTile);
-                this.tiles.push(genTile);
+                _this.tilesLayout.addChild(genTile);
+                _this.tiles.push(genTile);
+            };
+
+            for (var c = 0; c < this.col; c++) {
+                _loop(c);
             }
         }
         this.newGame();
@@ -144,6 +144,55 @@ cc.Class({
             roundTiles.push(this.tiles[n + this.col + 1]);
         }
         return roundTiles;
+    },
+
+    onTouchTile: function onTouchTile(touchTile) {
+        if (this.gameState != GAME_STATE.PLAY) {
+            return;
+        }
+        switch (this.touchState) {
+            case TOUCH_STATE.BLANK:
+                if (touchTile.getComponent("Blank").ClickType === this.Tile.TYPE.BOMB) {
+                    touchTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                    //this.gameOver(); // 点到炸弹游戏结束
+                    return;
+                }
+                var testTiles = []; // 定义一个栈
+                if (touchTile.getComponent("Blank").state === this.Tile.STATE.NONE) {
+                    testTiles.push(touchTile);
+                    while (testTiles.length) {
+                        // 当栈不为空的时候
+                        var testTile = testTiles.pop();
+                        if (testTile.getComponent("Blank").ClickType === this.Tile.TYPE.ZERO) {
+                            testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                            var roundTiles = this.tileRound(parseInt(testTile.name));
+                            for (var i = 0; i < roundTiles.length; i++) {
+                                if (roundTiles[i].getComponent("Blank").state == this.Tile.STATE.NONE) {
+                                    testTiles.push(roundTiles[i]);
+                                }
+                            }
+                        } else if (testTile.getComponent("Blank").ClickType >= 1 && testTile.getComponent("Blank").ClickType <= 8) {
+                            testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                        }
+                    }
+                    //this.judgeWin();
+                }
+                break;
+
+            case TOUCH_STATE.FLAG:
+                if (touchTile.getComponent("Blank").state == this.Tile.STATE.NONE) {
+                    touchTile.getComponent("Blank").state = this.Tile.STATE.FLAG;
+                } else if (touchTile.getComponent("Blank").state == this.Tile.STATE.FLAG) {
+                    touchTile.getComponent("Blank").state == this.Tile.STATE.DOUBT;
+                } else {
+                    touchTile.getComponent("Blank").state == this.Tile.STATE.NONE;
+                }
+                break;
+
+            default:
+                break;
+
+        }
     },
 
     start: function start() {}
