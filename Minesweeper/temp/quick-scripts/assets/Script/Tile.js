@@ -1,6 +1,6 @@
-(function() {"use strict";var __module = CC_EDITOR ? module : {exports:{}};var __filename = 'preview-scripts/assets/Script/Blank.js';var __require = CC_EDITOR ? function (request) {return cc.require(request, require);} : function (request) {return cc.require(request, __filename);};function __define (exports, require, module) {"use strict";
-cc._RF.push(module, 'f6da1522BNKVLT6b/I295sG', 'Blank', __filename);
-// Script/Blank.js
+(function() {"use strict";var __module = CC_EDITOR ? module : {exports:{}};var __filename = 'preview-scripts/assets/Script/Tile.js';var __require = CC_EDITOR ? function (request) {return cc.require(request, require);} : function (request) {return cc.require(request, __filename);};function __define (exports, require, module) {"use strict";
+cc._RF.push(module, 'f6da1522BNKVLT6b/I295sG', 'Tile', __filename);
+// Script/Tile.js
 
 "use strict";
 
@@ -16,15 +16,14 @@ var TYPE = cc.Enum({
     EIGHT: 8,
     BOMB: 9
 });
-
-var STATE = cc.Enum({ //如果设为-1，系统将会分配为上一个枚举值+1，在这里我不用-1，直接设为其他值，加强可读性
-    NONE: 0, // 未点击
-    CLICK: 1, // 已点击
-    FLAG: 2, // 插旗
-    DOUBT: 3 // 疑问
+var STATE = cc.Enum({
+    NONE: -1, //未点击
+    CLIKED: -1, //已点开
+    FLAG: -1, //插旗
+    DOUBT: -1 //疑问
 });
 
-// 其他脚本引用的状态量
+//其他脚本访问
 module.exports = {
     STATE: STATE,
     TYPE: TYPE
@@ -47,86 +46,80 @@ cc.Class({
         picSeven: cc.SpriteFrame,
         picEight: cc.SpriteFrame,
         picBomb: cc.SpriteFrame,
-
-        _state: { // 定义 _state 私有变量，用来表明当前方块的状态，初始状态不可见
+        _state: {
             default: STATE.NONE,
             type: STATE,
             visible: false
         },
-
-        state: { // 定义state 对象，在属性中设置了 get 或 set 以后，访问属性的时候，就能触发预定义的 get 或 set 方法
+        state: {
             get: function get() {
                 return this._state;
             },
-
             set: function set(value) {
-                if (value != this._state) {
+                if (value !== this._state) {
                     this._state = value;
                     switch (this._state) {
                         case STATE.NONE:
-                            this.getComponent(cc.Sprite).SpriteFrame = this.picNone;
+                            this.getComponent(cc.Sprite).spriteFrame = this.picNone;
                             break;
-                        case STATE.CLICK:
+                        case STATE.CLIKED:
                             this.showType();
                             break;
                         case STATE.FLAG:
-                            this.getComponent(cc.Sprite).SpriteFrame = this.picFlag;
+                            this.getComponent(cc.Sprite).spriteFrame = this.picFlag;
                             break;
                         case STATE.DOUBT:
-                            this.getComponent(cc.Sprite).SpriteFrame = this.picDoubt;
+                            this.getComponent(cc.Sprite).spriteFrame = this.picDoubt;
                             break;
                         default:
                             break;
                     }
                 }
             },
-            type: STATE // 类型为 STATE
+            type: STATE
         },
-
-        ClickType: {
+        type: {
             default: TYPE.ZERO,
             type: TYPE
         }
     },
 
     showType: function showType() {
-        switch (this.ClickType) {
+        switch (this.type) {
             case TYPE.ZERO:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picZero;
+                this.getComponent(cc.Sprite).spriteFrame = this.picZero;
                 break;
             case TYPE.ONE:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picOne;
+                this.getComponent(cc.Sprite).spriteFrame = this.picOne;
                 break;
             case TYPE.TWO:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picTwo;
+                this.getComponent(cc.Sprite).spriteFrame = this.picTwo;
                 break;
             case TYPE.THREE:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picThree;
+                this.getComponent(cc.Sprite).spriteFrame = this.picThree;
                 break;
             case TYPE.FOUR:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picFour;
+                this.getComponent(cc.Sprite).spriteFrame = this.picFour;
                 break;
             case TYPE.FIVE:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picFive;
+                this.getComponent(cc.Sprite).spriteFrame = this.picFive;
                 break;
             case TYPE.SIX:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picSix;
+                this.getComponent(cc.Sprite).spriteFrame = this.picSix;
                 break;
             case TYPE.SEVEN:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picSeven;
+                this.getComponent(cc.Sprite).spriteFrame = this.picSeven;
                 break;
             case TYPE.EIGHT:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picEight;
+                this.getComponent(cc.Sprite).spriteFrame = this.picEight;
                 break;
             case TYPE.BOMB:
-                this.getComponent(cc.Sprite).SpriteFrame = this.picBomb;
+                this.getComponent(cc.Sprite).spriteFrame = this.picBomb;
                 break;
             default:
                 break;
-
         }
     }
-
 });
 
 cc._RF.pop();
@@ -140,5 +133,5 @@ cc._RF.pop();
             });
         }
         })();
-        //# sourceMappingURL=Blank.js.map
+        //# sourceMappingURL=Tile.js.map
         

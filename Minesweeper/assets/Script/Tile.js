@@ -1,10 +1,4 @@
-"use strict";
-cc._RF.push(module, 'f6da1522BNKVLT6b/I295sG', 'Tile');
-// Script/Tile.js
-
-"use strict";
-
-var TYPE = cc.Enum({
+const TYPE = cc.Enum({
     ZERO: 0,
     ONE: 1,
     TWO: 2,
@@ -16,17 +10,17 @@ var TYPE = cc.Enum({
     EIGHT: 8,
     BOMB: 9
 });
-var STATE = cc.Enum({
-    NONE: -1, //未点击
-    CLIKED: -1, //已点开
-    FLAG: -1, //插旗
-    DOUBT: -1 //疑问
+const STATE = cc.Enum({
+    NONE: -1,//未点击
+    CLIKED: -1,//已点开
+    FLAG: -1,//插旗
+    DOUBT: -1,//疑问
 });
 
 //其他脚本访问
 module.exports = {
     STATE: STATE,
-    TYPE: TYPE
+    TYPE: TYPE,
 };
 
 cc.Class({
@@ -52,10 +46,10 @@ cc.Class({
             visible: false
         },
         state: {
-            get: function get() {
+            get: function () {
                 return this._state;
             },
-            set: function set(value) {
+            set: function (value) {
                 if (value !== this._state) {
                     this._state = value;
                     switch (this._state) {
@@ -71,20 +65,19 @@ cc.Class({
                         case STATE.DOUBT:
                             this.getComponent(cc.Sprite).spriteFrame = this.picDoubt;
                             break;
-                        default:
-                            break;
+                        default: break;
                     }
                 }
             },
-            type: STATE
+            type: STATE,
         },
         type: {
             default: TYPE.ZERO,
-            type: TYPE
-        }
+            type: TYPE,
+        },
     },
 
-    showType: function showType() {
+    showType: function () {
         switch (this.type) {
             case TYPE.ZERO:
                 this.getComponent(cc.Sprite).spriteFrame = this.picZero;
@@ -116,10 +109,7 @@ cc.Class({
             case TYPE.BOMB:
                 this.getComponent(cc.Sprite).spriteFrame = this.picBomb;
                 break;
-            default:
-                break;
+            default: break;
         }
     }
 });
-
-cc._RF.pop();

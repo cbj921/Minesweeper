@@ -5,14 +5,14 @@ cc._RF.push(module, '1bacdZDIUNA1r6Pb+jtmsWX', 'Game');
 "use strict";
 
 var GAME_STATE = cc.Enum({
-    PREPARE: 0,
-    PLAY: 1,
-    WIN: 2,
-    DEAD: 3
+    PREPARE: -1,
+    PLAY: -1,
+    DEAD: -1,
+    WIN: -1
 });
 var TOUCH_STATE = cc.Enum({
-    BLANK: 0,
-    FLAG: 1
+    BLANK: -1,
+    FLAG: -1
 });
 
 cc.Class({
@@ -21,127 +21,124 @@ cc.Class({
     properties: {
         tilesLayout: cc.Node,
         tile: cc.Prefab,
-        btnStart: cc.Node,
-        tiles: [], // 用数组保存所有tile引用
+        btnShow: cc.Node,
+        tiles: [], //用一个数组保存所有tile的引用，数组下标就是相应tile的tag
         picPrepare: cc.SpriteFrame,
         picPlay: cc.SpriteFrame,
-        picWin: cc.SpriteFrame,
         picDead: cc.SpriteFrame,
-
+        picWin: cc.SpriteFrame,
         gameState: {
             default: GAME_STATE.PREPARE,
             type: GAME_STATE
         },
-        touchState: { // 左键点开方块，右键标记flag，flag状态下再右键一次Doubt
+        touchState: { //左键点开tile，右键插旗
             default: TOUCH_STATE.BLANK,
             type: TOUCH_STATE
         },
         row: 0,
         col: 0,
         bombNum: 0
-
     },
 
     onLoad: function onLoad() {
         var _this = this;
 
-        this.Tile = require("Blank"); // 获得Blank脚本中的状态量：STATE,TYPE
-        var self = this; // 将this赋值给self，好处就是在回调函数中self依旧对应的是this
-        for (var r = 0; r < this.row; r++) {
-            var _loop = function _loop(c) {
-                var genTile = cc.instantiate(_this.tile);
-                genTile.name = String(r * _this.col + c); // 必须为 字符串 类型，否则会出错，将生成的方块名字命名为在 tiles数组 中的下标
-                genTile.on(cc.Node.EventType.MOUSE_UP, function (event) {
-                    // 对每一个生成的方块都开启 鼠标事件监听
+        this.Tile = require("Tile");
+        var self = this;
+        for (var y = 0; y < this.row; y++) {
+            var _loop = function _loop(x) {
+                var tile = cc.instantiate(_this.tile);
+                tile.name = String(y * _this.col + x);
+                tile.on(cc.Node.EventType.MOUSE_UP, function (event) {
                     if (event.getButton() === cc.Event.EventMouse.BUTTON_LEFT) {
                         self.touchState = TOUCH_STATE.BLANK;
                     } else if (event.getButton() === cc.Event.EventMouse.BUTTON_RIGHT) {
                         self.touchState = TOUCH_STATE.FLAG;
                     }
-                    self.onTouchTile(genTile); // 这时候这里的是指每一个生成的方块。
+                    self.onTouchTile(tile);
                 });
-                _this.tilesLayout.addChild(genTile);
-                _this.tiles.push(genTile);
+                _this.tilesLayout.addChild(tile);
+                _this.tiles.push(tile);
             };
 
-            for (var c = 0; c < this.col; c++) {
-                _loop(c);
+            for (var x = 0; x < this.col; x++) {
+                _loop(x);
             }
         }
         this.newGame();
     },
 
     newGame: function newGame() {
-        var tilesLength = this.tiles.length;
-        // 初始化场景
-        for (var n = 0; n < tilesLength; n++) {
-            this.tiles[n].getComponent("Blank").ClickType = this.Tile.TYPE.ZERO;
-            this.tiles[n].getComponent("Blank").state = this.Tile.STATE.NONE;
+        //初始化场景
+        for (var _n = 0; _n < this.tiles.length; _n++) {
+            this.tiles[_n].getComponent("Tile").type = this.Tile.TYPE.ZERO;
+            this.tiles[_n].getComponent("Tile").state = this.Tile.STATE.NONE;
         }
-        // 添加雷
+        //添加雷
         var tilesIndex = [];
-        for (var i = 0; i < tilesLength; i++) {
-            tilesIndex[i] = i; // 初始化方块数组，然后雷将随机填入其中，一维数组表示二维地图
+        for (var i = 0; i < this.tiles.length; i++) {
+            tilesIndex[i] = i;
         }
-        for (var b = 0; b < this.bombNum; b++) {
-            var _n = Math.floor(Math.random() * tilesIndex.length); // 随机炸弹位置
-            this.tiles[tilesIndex[_n]].getComponent("Blank").ClickType = this.Tile.TYPE.BOMB;
-            tilesIndex.splice(_n, 1); // 删除第 n 个位置一个元素，避免重复放雷
+        for (var j = 0; j < this.bombNum; j++) {
+            var n = Math.floor(Math.random() * tilesIndex.length);
+            this.tiles[tilesIndex[n]].getComponent("Tile").type = this.Tile.TYPE.BOMB;
+            tilesIndex.splice(n, 1); //从第n个位置删除一个元素
+            //如果没有splice方法可以用这种方式
+            // tilesIndex[n] = tilesIndex[tilesIndex.length-1];
+            // tilesIndex.length--;
         }
-        // 标记雷周围的方块
-        for (var _n2 = 0; _n2 < tilesLength; _n2++) {
+        //标记雷周围的方块
+        for (var k = 0; k < this.tiles.length; k++) {
             var tempBomb = 0;
-            if (this.tiles[_n2].getComponent("Blank").ClickType == this.Tile.TYPE.ZERO) {
-                var roundTiles = this.tileRound(_n2);
+            if (this.tiles[k].getComponent("Tile").type == this.Tile.TYPE.ZERO) {
+                var roundTiles = this.tileRound(k);
                 for (var m = 0; m < roundTiles.length; m++) {
-                    if (roundTiles[m].getComponent("Blank").ClickType == this.Tile.TYPE.BOMB) {
+                    if (roundTiles[m].getComponent("Tile").type == this.Tile.TYPE.BOMB) {
                         tempBomb++;
                     }
                 }
-                this.tiles[_n2].getComponent("Blank").ClickType = tempBomb; // 周围有多少雷就标记几
+                this.tiles[k].getComponent("Tile").type = tempBomb;
             }
         }
+
         this.gameState = GAME_STATE.PLAY;
-        this.btnStart.getComponent(cc.Sprite).SpriteFrame = this.picPlay;
+        this.btnShow.getComponent(cc.Sprite).spriteFrame = this.picPlay;
     },
 
-    // 返回 name 为 n 的 tile 的周围 tile 数组
-    tileRound: function tileRound(n) {
-        // col表明每排有几个元素
-        // Math.floor(n/this.row)==15的时候就是最后一行了，n%this.col==29时就是最后一列
-        // 这里逻辑不能出错，一出错就运行失败
+    //返回tag为i的tile的周围tile数组
+    tileRound: function tileRound(i) {
         var roundTiles = [];
-        if (n % this.col > 0) {
+        if (i % this.col > 0) {
             //left
-            roundTiles.push(this.tiles[n - 1]);
+            roundTiles.push(this.tiles[i - 1]);
         }
-        if (n % this.col < this.col - 1) {
-            // right
-            roundTiles.push(this.tiles[n + 1]);
+        if (i % this.col > 0 && Math.floor(i / this.col) > 0) {
+            //left top
+            roundTiles.push(this.tiles[i - this.col - 1]);
         }
-        if (Math.floor(n / this.col) < this.row - 1) {
-            // bottom
-            roundTiles.push(this.tiles[n + this.col]);
+        if (i % this.col > 0 && Math.floor(i / this.col) < this.row - 1) {
+            //left bottom
+            roundTiles.push(this.tiles[i + this.col - 1]);
         }
-        if (Math.floor(n / this.col) > 0) {
-            // top
-            roundTiles.push(this.tiles[n - this.col]);
+        if (Math.floor(i / this.col) > 0) {
+            //bottom
+            roundTiles.push(this.tiles[i - this.col]);
         }
-        if (n % this.col > 0 && Math.floor(n / this.col) > 0) {
-            // 左上
-            roundTiles.push(this.tiles[n - this.col - 1]);
+        if (Math.floor(i / this.col) < this.row - 1) {
+            //top
+            roundTiles.push(this.tiles[i + this.col]);
         }
-        if (n % this.col > 0 && Math.floor(n / this.col) < this.row - 1) {
-            // 左下
-            roundTiles.push(this.tiles[n + this.col - 1]);
+        if (i % this.col < this.col - 1) {
+            //right
+            roundTiles.push(this.tiles[i + 1]);
         }
-        if (n % this.col < this.col - 1 && Math.floor(n / this.col) > 0) {
-            // 右上
-            roundTiles.push(this.tiles[n - this.col + 1]);
+        if (i % this.col < this.col - 1 && Math.floor(i / this.col) > 0) {
+            //rihgt top
+            roundTiles.push(this.tiles[i - this.col + 1]);
         }
-        if (n % this.col < this.col - 1 && Math.floor(n / this.col) < this.row - 1) {
-            // 右下
-            roundTiles.push(this.tiles[n + this.col + 1]);
+        if (i % this.col < this.col - 1 && Math.floor(i / this.col) < this.row - 1) {
+            //right bottom
+            roundTiles.push(this.tiles[i + this.col + 1]);
         }
         return roundTiles;
     },
@@ -152,47 +149,43 @@ cc.Class({
         }
         switch (this.touchState) {
             case TOUCH_STATE.BLANK:
-                if (touchTile.getComponent("Blank").ClickType === this.Tile.TYPE.BOMB) {
-                    touchTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
-                    this.gameOver(); // 点到炸弹游戏结束
+                if (touchTile.getComponent("Tile").type === this.Tile.TYPE.BOMB) {
+                    touchTile.getComponent("Tile").state = this.Tile.STATE.CLIKED;
+                    this.gameOver();
                     return;
                 }
-                var testTiles = []; // 定义一个栈
-                if (touchTile.getComponent("Blank").state === this.Tile.STATE.NONE) {
+                var testTiles = [];
+                if (touchTile.getComponent("Tile").state === this.Tile.STATE.NONE) {
                     testTiles.push(touchTile);
                     while (testTiles.length) {
-                        // 当栈不为空的时候
                         var testTile = testTiles.pop();
-                        if (testTile.getComponent("Blank").ClickType == this.Tile.TYPE.ZERO) {
-                            testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                        if (testTile.getComponent("Tile").type === 0) {
+                            testTile.getComponent("Tile").state = this.Tile.STATE.CLIKED;
                             var roundTiles = this.tileRound(parseInt(testTile.name));
                             for (var i = 0; i < roundTiles.length; i++) {
-                                if (roundTiles[i].getComponent("Blank").state == this.Tile.STATE.NONE) {
+                                if (roundTiles[i].getComponent("Tile").state == this.Tile.STATE.NONE) {
                                     testTiles.push(roundTiles[i]);
                                 }
                             }
-                        } else if (testTile.getComponent("Blank").ClickType > 0 && testTile.getComponent("Blank").ClickType < 9) {
-                            testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                        } else if (testTile.getComponent("Tile").type > 0 && testTile.getComponent("Tile").type < 9) {
+                            testTile.getComponent("Tile").state = this.Tile.STATE.CLIKED;
                         }
                     }
                     this.judgeWin();
                 }
-                break;
 
+                break;
             case TOUCH_STATE.FLAG:
-                if (touchTile.getComponent("Blank").state == this.Tile.STATE.NONE) {
-                    touchTile.getComponent("Blank").state = this.Tile.STATE.FLAG;
-                } else if (touchTile.getComponent("Blank").state == this.Tile.STATE.FLAG) {
-                    touchTile.getComponent("Blank").state = this.Tile.STATE.DOUBT;
+                if (touchTile.getComponent("Tile").state == this.Tile.STATE.NONE) {
+                    touchTile.getComponent("Tile").state = this.Tile.STATE.FLAG;
+                } else if (touchTile.getComponent("Tile").state == this.Tile.STATE.FLAG) {
+                    touchTile.getComponent("Tile").state = this.Tile.STATE.DOUBT;
                 } else {
-                    touchTile.getComponent("Blank").state = this.Tile.STATE.NONE;
+                    touchTile.getComponent("Tile").state = this.Tile.STATE.NONE;
                 }
-                console.log("right click");
                 break;
-
             default:
                 break;
-
         }
     },
 
@@ -200,19 +193,19 @@ cc.Class({
         var confNum = 0;
         //判断是否胜利
         for (var i = 0; i < this.tiles.length; i++) {
-            if (this.tiles[i].getComponent('Blank').state === this.Tile.STATE.CLICK) {
+            if (this.tiles[i].getComponent("Tile").state === this.Tile.STATE.CLIKED) {
                 confNum++;
             }
         }
         if (confNum === this.tiles.length - this.bombNum) {
             this.gameState = GAME_STATE.WIN;
-            this.btnStart.getComponent(cc.Sprite).spriteFrame = this.picWin;
+            this.btnShow.getComponent(cc.Sprite).spriteFrame = this.picWin;
         }
     },
 
     gameOver: function gameOver() {
         this.gameState = GAME_STATE.DEAD;
-        this.btnStart.getComponent(cc.Sprite).spriteFrame = this.picDead;
+        this.btnShow.getComponent(cc.Sprite).spriteFrame = this.picDead;
     },
 
     onBtnShow: function onBtnShow() {
@@ -229,7 +222,6 @@ cc.Class({
         }
     }
 
-    // update (dt) {},
 });
 
 cc._RF.pop();
