@@ -98,7 +98,7 @@ cc.Class({
                         tempBomb++;
                     }
                 }
-                this.tiles[k].getComponent("Blank").ClickType = tempBomb; // 周围有多少雷就标记几
+                this.tiles[_n2].getComponent("Blank").ClickType = tempBomb; // 周围有多少雷就标记几
             }
         }
         this.gameState = GAME_STATE.PLAY;
@@ -106,7 +106,45 @@ cc.Class({
     },
 
     // 返回 name 为 n 的 tile 的周围 tile 数组
-    tileRound: function tileRound() {},
+    tileRound: function tileRound(n) {
+        // col表明每排有几个元素
+        // Math.floor(n/this.row)==15的时候就是最后一行了，n%this.col==29时就是最后一列
+        // 这里逻辑不能出错，一出错就运行失败
+        var roundTiles = [];
+        if (n % this.col > 0) {
+            //left
+            roundTiles.push(this.tiles[n - 1]);
+        }
+        if (n % this.col < this.col - 1) {
+            // right
+            roundTiles.push(this.tiles[n + 1]);
+        }
+        if (Math.floor(n / this.col) < this.row - 1) {
+            // bottom
+            roundTiles.push(this.tiles[n + this.col]);
+        }
+        if (Math.floor(n / this.col) > 0) {
+            // top
+            roundTiles.push(this.tiles[n - this.col]);
+        }
+        if (n % this.col > 0 && Math.floor(n / this.col) > 0) {
+            // 左上
+            roundTiles.push(this.tiles[n - this.col - 1]);
+        }
+        if (n % this.col > 0 && Math.floor(n / this.col) < this.row - 1) {
+            // 左下
+            roundTiles.push(this.tiles[n + this.col - 1]);
+        }
+        if (n % this.col < this.col - 1 && Math.floor(n / this.col) > 0) {
+            // 右上
+            roundTiles.push(this.tiles[n - this.col + 1]);
+        }
+        if (n % this.col < this.col - 1 && Math.floor(n / this.col) < this.row - 1) {
+            // 右下
+            roundTiles.push(this.tiles[n + this.col + 1]);
+        }
+        return roundTiles;
+    },
 
     start: function start() {}
 }
