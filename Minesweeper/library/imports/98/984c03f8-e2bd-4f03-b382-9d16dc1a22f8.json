@@ -16,9 +16,6 @@
     "_children": [
       {
         "__id__": 2
-      },
-      {
-        "__id__": 12
       }
     ],
     "_active": true,
@@ -45,8 +42,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5158008098602295,
-      "y": 0.5158008098602295,
+      "x": 0.4352752816480622,
+      "y": 0.4352752816480622,
       "z": 1
     },
     "_quat": {
@@ -77,13 +74,16 @@
       },
       {
         "__id__": 8
+      },
+      {
+        "__id__": 11
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 11
+        "__id__": 13
       }
     ],
     "_prefab": null,
@@ -358,8 +358,12 @@
     "pressedSprite": {
       "__uuid__": "a0fea357-60fa-458a-bbbf-3828d15da471"
     },
-    "_N$hoverSprite": null,
-    "hoverSprite": null,
+    "_N$hoverSprite": {
+      "__uuid__": "a8adc4db-9f59-4195-a03d-c60df3be5f20"
+    },
+    "hoverSprite": {
+      "__uuid__": "a8adc4db-9f59-4195-a03d-c60df3be5f20"
+    },
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 5
@@ -491,35 +495,18 @@
     "_id": "47qxHpMKNNYKOI2TM90KeB"
   },
   {
-    "__type__": "cc.Canvas",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_designResolution": {
-      "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
-    },
-    "_fitWidth": false,
-    "_fitHeight": true,
-    "_id": "628VnJTRdJY6wNMmjyvGgf"
-  },
-  {
     "__type__": "cc.Node",
     "_name": "Game",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 1
+      "__id__": 2
     },
     "_children": [],
     "_active": true,
-    "_level": 1,
+    "_level": 2,
     "_components": [
       {
-        "__id__": 13
+        "__id__": 12
       }
     ],
     "_prefab": null,
@@ -543,8 +530,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 480,
-      "y": 320,
+      "x": 0,
+      "y": 0,
       "z": 0
     },
     "_scale": {
@@ -573,7 +560,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 12
+      "__id__": 11
     },
     "_enabled": true,
     "tilesLayout": {
@@ -604,5 +591,22 @@
     "col": 30,
     "bombNum": 99,
     "_id": "7a6H9xzxNKcrThcGwQVSIK"
+  },
+  {
+    "__type__": "cc.Canvas",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_designResolution": {
+      "__type__": "cc.Size",
+      "width": 960,
+      "height": 640
+    },
+    "_fitWidth": false,
+    "_fitHeight": true,
+    "_id": "628VnJTRdJY6wNMmjyvGgf"
   }
 ]

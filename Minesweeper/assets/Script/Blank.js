@@ -49,13 +49,13 @@ cc.Class({
             visible: false
         },
 
-        state: { // 定义state 对象，可调用get，set，来获得和设置状态
+        state: { // 定义state 对象，在属性中设置了 get 或 set 以后，访问属性的时候，就能触发预定义的 get 或 set 方法
             get: function(){
                 return this._state;
             },
-
+    
             set: function(value){
-                if(value !== this._state){
+                if(value != this._state){
                     this._state = value;
                     switch(this._state){
                         case STATE.NONE:
@@ -76,6 +76,7 @@ cc.Class({
             },
             type: STATE,  // 类型为 STATE
         },
+
         ClickType: {
             default: TYPE.ZERO,
             type: TYPE,

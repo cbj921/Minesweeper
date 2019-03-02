@@ -48,7 +48,7 @@ cc.Class({
                     if (event.getButton() === cc.Event.EventMouse.BUTTON_LEFT) {
                         self.touchState = TOUCH_STATE.BLANK;
                     } else if (event.getButton() === cc.Event.EventMouse.BUTTON_RIGHT) {
-                            self.touchState = TOUCH_STATE.FLAG; 
+                        self.touchState = TOUCH_STATE.FLAG;
                     }
                     self.onTouchTile(genTile); // 这时候这里的是指每一个生成的方块。
                 });
@@ -60,15 +60,15 @@ cc.Class({
     },
 
     newGame: function () {
-        let thilesLength = this.tiles.length;
+        let tilesLength = this.tiles.length;
         // 初始化场景
-        for (let n = 0; n < thilesLength; n++) {
+        for (let n = 0; n < tilesLength; n++) {
             this.tiles[n].getComponent("Blank").ClickType = this.Tile.TYPE.ZERO;
             this.tiles[n].getComponent("Blank").state = this.Tile.STATE.NONE;
         }
         // 添加雷
         let tilesIndex = [];
-        for (let i = 0; i < thilesLength; i++) {
+        for (let i = 0; i < tilesLength; i++) {
             tilesIndex[i] = i; // 初始化方块数组，然后雷将随机填入其中，一维数组表示二维地图
         }
         for (let b = 0; b < this.bombNum; b++) {
@@ -77,7 +77,7 @@ cc.Class({
             tilesIndex.splice(n, 1); // 删除第 n 个位置一个元素，避免重复放雷
         }
         // 标记雷周围的方块
-        for (let n = 0; n < thilesLength; n++) {
+        for (let n = 0; n < tilesLength; n++) {
             let tempBomb = 0;
             if (this.tiles[n].getComponent("Blank").ClickType == this.Tile.TYPE.ZERO) {
                 let roundTiles = this.tileRound(n);
@@ -133,7 +133,7 @@ cc.Class({
             case TOUCH_STATE.BLANK:
                 if (touchTile.getComponent("Blank").ClickType === this.Tile.TYPE.BOMB) {
                     touchTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
-                    //this.gameOver(); // 点到炸弹游戏结束
+                    this.gameOver(); // 点到炸弹游戏结束
                     return;
                 }
                 let testTiles = []; // 定义一个栈
@@ -142,7 +142,7 @@ cc.Class({
                     while (testTiles.length) {
                         // 当栈不为空的时候
                         let testTile = testTiles.pop();
-                        if (testTile.getComponent("Blank").ClickType === this.Tile.TYPE.ZERO) {
+                        if (testTile.getComponent("Blank").ClickType == this.Tile.TYPE.ZERO) {
                             testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
                             let roundTiles = this.tileRound(parseInt(testTile.name));
                             for (let i = 0; i < roundTiles.length; i++) {
@@ -150,33 +150,63 @@ cc.Class({
                                     testTiles.push(roundTiles[i]);
                                 }
                             }
-                        } else if (testTile.getComponent("Blank").ClickType >=1 
-                            && testTile.getComponent("Blank").ClickType <= 8) {
-                                testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
+                        } else if (testTile.getComponent("Blank").ClickType >0
+                            && testTile.getComponent("Blank").ClickType <9) {
+                            testTile.getComponent("Blank").state = this.Tile.STATE.CLICK;
                         }
                     }
-                    //this.judgeWin();
-                }
-                break;
-            
-            case TOUCH_STATE.FLAG:
-                if(touchTile.getComponent("Blank").state == this.Tile.STATE.NONE){
-                    touchTile.getComponent("Blank").state = this.Tile.STATE.FLAG;
-                }else if(touchTile.getComponent("Blank").state == this.Tile.STATE.FLAG){
-                    touchTile.getComponent("Blank").state == this.Tile.STATE.DOUBT;
-                }else{
-                    touchTile.getComponent("Blank").state == this.Tile.STATE.NONE;
+                    this.judgeWin();
                 }
                 break;
 
-            default: break;   
-            
+            case TOUCH_STATE.FLAG:
+                if (touchTile.getComponent("Blank").state == this.Tile.STATE.NONE) {
+                    touchTile.getComponent("Blank").state = this.Tile.STATE.FLAG;
+                } else if (touchTile.getComponent("Blank").state == this.Tile.STATE.FLAG) {
+                    touchTile.getComponent("Blank").state = this.Tile.STATE.DOUBT;
+                } else {
+                    touchTile.getComponent("Blank").state = this.Tile.STATE.NONE;
+                }
+                console.log("right click");
+                break;
+
+            default: break;
+
         }
     },
 
-    start() {
-
+    judgeWin:function(){
+        var confNum = 0;
+        //判断是否胜利
+        for(let i=0;i<this.tiles.length;i++){
+            if(this.tiles[i].getComponent('Blank').state === this.Tile.STATE.CLICK){
+                confNum++;
+            }
+        }
+        if(confNum === this.tiles.length-this.bombNum){
+            this.gameState = GAME_STATE.WIN;
+            this.btnStart.getComponent(cc.Sprite).spriteFrame = this.picWin;
+        }
     },
+
+    gameOver:function(){
+        this.gameState = GAME_STATE.DEAD;
+        this.btnStart.getComponent(cc.Sprite).spriteFrame = this.picDead;
+    },
+
+    onBtnShow:function(){
+        if(this.gameState === GAME_STATE.PREPARE){
+            this.newGame();
+        }
+        if(this.gameState === GAME_STATE.DEAD){
+            // this.bombNum--;
+            this.newGame();
+        }
+        if(this.gameState === GAME_STATE.WIN){
+            // this.bombNum++;
+            this.newGame();
+        }
+    }
 
     // update (dt) {},
 });
